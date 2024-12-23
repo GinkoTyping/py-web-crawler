@@ -9,8 +9,10 @@ import os
 
 
 class Scraper:
-    def __init__(self, url):
+    def __init__(self, url, images_dir):
         self.url = url
+        self.images_dir = images_dir
+        self.house_host = ''
         self.agents_urls: dict[str, int] = {}
 
     def set_host(self, host):
@@ -18,7 +20,8 @@ class Scraper:
 
     def scrape_house_info(self):
         response = requests.get(self.url)
-        self.set_host(response.url)
+
+        self.set_host('https://' + urlparse(response.url).hostname)
         tree = html.fromstring(response.content)
 
         cards = tree.xpath('//div[@class="houseList"]/dl/dd')
@@ -38,8 +41,8 @@ class Scraper:
         return houses_info
 
     def scrape_all_agent_info_by_houses(self, houses_data: list[HouseInfo]) -> dict[str, AgentInfo]:
-        if not os.path.exists('images/agent'):
-            os.makedirs('images/agent')
+        if not os.path.exists(self.images_dir):
+            os.makedirs(self.images_dir)
         agents_info: dict[str, AgentInfo] = {}
         for house_data in houses_data:
             agent_info = self.scrape_agent_info(house_data.no)

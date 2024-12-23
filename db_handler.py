@@ -73,3 +73,10 @@ class DBHandler:
         if self.connection.is_connected():
             self.connection.close()
             print("MySQL 连接关闭")
+
+    def clear(self):
+        cursor = self.connection.cursor()
+        sql_drop_house = "DROP TABLE IF EXISTS house_info"
+        sql_drop_agent = "DROP TABLE IF EXISTS agent_info"
+        cursor.execute(sql_drop_house)
+        cursor.execute(sql_drop_agent)
