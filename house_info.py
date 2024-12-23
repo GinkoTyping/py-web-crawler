@@ -1,7 +1,7 @@
 class HouseInfo:
-    def __int__(self, name, layout, area, location, cost):
+    def __init__(self, no, name, layout, area, location):
+        self.no = no
         self.name = name
         self.layout = layout
         self.area = area
         self.location = location
-        self.cost = cost

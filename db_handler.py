@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
+
 class DBHandler:
     def __init__(self, host, user, password, database):
         self.host = host
@@ -22,17 +23,18 @@ class DBHandler:
         except Error as e:
             print(f"Error: '{e}' occurred")
 
-    def store_data(self, data):
+    def store_house(self, data):
         cursor = self.connection.cursor()
-        sql_insert_query = """INSERT INTO pages (title, description)
-                              VALUES (%s, %s)"""
-        record = (data['title'], data['description'])
-        try:
-            cursor.execute(sql_insert_query, record)
-            self.connection.commit()
-            print("Data inserted successfully")
-        except Error as e:
-            print(f"Error: '{e}' occurred")
+        for house in data:
+            sql_insert_query = """INSERT INTO house_info (no, name, layout, area, location)
+                                  VALUES (%s, %s, %s, %s, %s)"""
+            record = (house.no, house.name, house.layout, house.area, house.location)
+            try:
+                cursor.execute(sql_insert_query, record)
+                self.connection.commit()
+                print("Data inserted successfully")
+            except Error as e:
+                print(f"Error: '{e}' occurred")
 
     def store_images(self, images):
         cursor = self.connection.cursor()
