@@ -41,28 +41,43 @@
 1. **网页解析**：
    - 使用 `lxml.html` 解析 HTML 文档。
    - 通过 XPath 提取关键字段。
-   - 示例代码：
      ```python
      from lxml import html
      tree = html.fromstring(html_content)
      title = tree.xpath('//div[@class="title"]/text()')[0]
      ```
+      ![](media/image6.png)
+   - 图片保存在本地image文件夹  
+      ![](media/image5.png)
 
 2. **异常处理**：
    - 过滤无经纪人信息的房源。
+      ![](media/image2.png)
    - 处理重复经纪人数据。
+      ![](media/image3.png)
    - 解决编码问题（如未指定 UTF-8 的页面）。
-
-   ![](media/image3.png)
-   ![](media/image4.png)
+      ![](media/image4.png)
+   
+   
 
 ### 3. 数据存储设计
 - **MySQL 表结构**：
   ```sql
-  CREATE TABLE house (
-    id INT PRIMARY KEY,
-    title VARCHAR(255),
-    area FLOAT,
-    location VARCHAR(100),
-    broker_id INT
+  CREATE TABLE IF NOT EXISTS house_info
+  (
+      no       VARCHAR(100) PRIMARY KEY,
+      name     VARCHAR(100),
+      layout   VARCHAR(50),
+      area     VARCHAR(50),
+      location VARCHAR(100)
   );
+
+  CREATE TABLE IF NOT EXISTS agent_info
+  (
+      image_path VARCHAR(100) PRIMARY KEY,
+      name       VARCHAR(50),
+      company    VARCHAR(50),
+      main_area  VARCHAR(50)
+  )
+  ```
+  ![](media/image7.png)
